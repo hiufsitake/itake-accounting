@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "LedgerX MY — Malaysia-compliant accounting software",
   "private": true,
+  "homepage": "https://hiufsitake.github.io/itake-accounting",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
