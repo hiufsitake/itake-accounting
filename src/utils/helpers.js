@@ -4,6 +4,10 @@ import { SST_RATES } from "../data/seedData";
 export const fmtRM = n =>
   "RM " + Number(n).toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+// Number without currency prefix — used for payslip line items
+export const fmtN = n =>
+  Number(n).toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
 export const fmtK = n =>
   n >= 1000 ? "RM " + (n / 1000).toFixed(1) + "k" : fmtRM(n);
 
