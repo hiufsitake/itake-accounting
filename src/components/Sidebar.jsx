@@ -55,9 +55,9 @@ export default function Sidebar({ page, setPage, badges = {} }) {
     <aside className="sb">
       <div className="brand">
         <div className="brand-name">
-          LedgerX <span className="my-tag">MY</span>
+          ITAKE <span className="my-tag">Acct</span>
         </div>
-        <div className="brand-sub">Malaysia Accounting</div>
+        <div className="brand-sub">Accounting System</div>
       </div>
 
       {NAV.map(g => (
@@ -81,7 +81,7 @@ export default function Sidebar({ page, setPage, badges = {} }) {
 
       <div className="sb-bot">
         <div className="cbox">
-          <div className="cbox-t">✅ Compliance</div>
+          <div className="cbox-t">✓ Compliance</div>
           <div className="cbox-i">✓ Companies Act 2016</div>
           <div className="cbox-i">✓ Income Tax Act 1967</div>
           <div className="cbox-i">✓ SST Act 2018</div>

@@ -65,7 +65,7 @@ export default function App() {
         <div className="main">
           <div className="topbar">
             <div className="page-h">{PAGE_TITLES[page] || page}</div>
-            <div style={{ fontSize: 12, color: "#9a9388" }}>LedgerX MY — Malaysia Accounting</div>
+            <div style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em" }}>ITAKE Group — Accounting</div>
           </div>
           <div className="body">
             {renderPage()}
