@@ -51,7 +51,7 @@ export const COMPANIES = [
     address:   "Unit 5-3, Menara iTake, Jalan Ampang,\n50450 Kuala Lumpur, Malaysia",
     phone:     "+603-2345 6791",
     email:     "billing@itakeenergy.com.my",
-    bank:      "RHB Bank | 2122 3456 7890",
+    bank:      "UOB Bank (BizCA+) | 911-305-289-5",
     color:     "#f59e0b",
   },
 ];
