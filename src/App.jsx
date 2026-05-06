@@ -81,7 +81,6 @@ function CompanySwitcher({ activeId, onChange }) {
               <span style={{ width: 10, height: 10, borderRadius: "50%", background: co.color, flexShrink: 0, marginTop: 3 }} />
               <div>
                 <div style={{ fontSize: 12, fontWeight: 700, color: "#0f172a" }}>{co.name}</div>
-                <div style={{ fontSize: 10, color: "#94a3b8", marginTop: 1 }}>SSM: {co.reg.split(" ")[0]}</div>
               </div>
               {co.id === activeId && (
                 <span style={{ marginLeft: "auto", fontSize: 11, color: co.color, fontWeight: 700 }}>✓</span>
