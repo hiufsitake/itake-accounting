@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { T } from "../components/tokens";
-import { MY_COMPANY } from "../data/seedData";
+
 import { calcLines, fmtRM } from "../utils/helpers";
 
 const PERIODS = ["April 2026","March 2026","February 2026","January 2026","December 2025","November 2025"];
@@ -30,7 +30,7 @@ const docCss = `
 .sa-val{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600}
 `;
 
-function SOADocument({ customer, transactions, period, onClose }) {
+function SOADocument({ customer, transactions, period, onClose, company }) {
   const openingBalance = 0;
   const totalInvoiced  = transactions.filter(t=>t.type==="invoice").reduce((s,t)=>s+t.amount,0);
   const totalPaid      = transactions.filter(t=>t.type==="payment").reduce((s,t)=>s+t.amount,0);
@@ -55,8 +55,8 @@ function SOADocument({ customer, transactions, period, onClose }) {
         <div className="soa-doc">
           <div className="soa-hdr">
             <div>
-              <div className="soa-co">{MY_COMPANY.name}</div>
-              <div className="soa-co-det">SSM: {MY_COMPANY.reg}<br/>SST: {MY_COMPANY.sst}<br/>{MY_COMPANY.address}<br/>{MY_COMPANY.phone} · {MY_COMPANY.email}</div>
+              <div className="soa-co">{company.name}</div>
+              <div className="soa-co-det">SSM: {company.reg}<br/>SST: {company.sst}<br/>{company.address}<br/>{company.phone} · {company.email}</div>
             </div>
             <div>
               <div className="soa-type">Statement of Account</div>
@@ -161,12 +161,12 @@ function SOADocument({ customer, transactions, period, onClose }) {
 
           {closingBalance > 0 && (
             <div style={{ background:T.redLight,border:`1px solid ${T.redBorder}`,borderRadius:7,padding:"10px 14px",marginBottom:14,fontSize:11,color:T.red }}>
-              <strong>Amount Due: {fmtRM(closingBalance)}</strong> — Please settle outstanding balance promptly. For queries, contact {MY_COMPANY.email} or {MY_COMPANY.phone}.
+              <strong>Amount Due: {fmtRM(closingBalance)}</strong> — Please settle outstanding balance promptly. For queries, contact {company.email} or {company.phone}.
             </div>
           )}
 
           <div style={{ fontSize:10,color:"#9a9388",borderTop:"1px solid #e5e2db",paddingTop:10 }}>
-            This statement is for account reference only. Please verify all entries and notify us of any discrepancies within 7 days. Payment to: {MY_COMPANY.bank}. Ref: Account No. {customer.id}.
+            This statement is for account reference only. Please verify all entries and notify us of any discrepancies within 7 days. Payment to: {company.bank}. Ref: Account No. {customer.id}.
           </div>
         </div>
       </div>
@@ -283,6 +283,7 @@ export default function StatementOfAccountPage({ data }) {
           transactions={buildTransactions(selectedCustomer.id)}
           period={period}
           onClose={() => setViewModal(null)}
+          company={data.company}
         />
       )}
     </div>

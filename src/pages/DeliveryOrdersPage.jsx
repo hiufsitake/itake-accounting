@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { T } from "../components/tokens";
 import { calcLines, fmtRM, nextId } from "../utils/helpers";
-import { MY_COMPANY, SST_RATES } from "../data/seedData";
+import { SST_RATES } from "../data/seedData";
 
 function StatusBadge({ s }) {
   const m = { "pending":"ba","delivered":"bg","invoiced":"bp" };
@@ -37,7 +37,7 @@ const docCss = `
 .sig-filled{font-size:12px;font-weight:600;color:#18160f;margin-bottom:4px}
 `;
 
-function DODocument({ doc, customer, onClose }) {
+function DODocument({ doc, customer, onClose, company }) {
   const { rows, subtotal, sstTotal, total } = calcLines(doc.items);
   return (
     <div style={{ position:"fixed",inset:0,background:"#2a2520",zIndex:400,display:"flex",flexDirection:"column",overflow:"hidden" }}>
@@ -53,13 +53,13 @@ function DODocument({ doc, customer, onClose }) {
         <div className="doc">
           <div className="doc-hdr">
             <div>
-              <div className="doc-co-name">{MY_COMPANY.name}</div>
-              <div className="doc-co-det">SSM: {MY_COMPANY.reg}<br/>SST: {MY_COMPANY.sst} · TIN: {MY_COMPANY.tin}<br/>{MY_COMPANY.address}<br/>{MY_COMPANY.phone} · {MY_COMPANY.email}</div>
+              <div className="doc-co-name">{company.name}</div>
+              <div className="doc-co-det">SSM: {company.reg}<br/>SST: {company.sst} · TIN: {company.tin}<br/>{company.address}<br/>{company.phone} · {company.email}</div>
             </div>
             <div><div className="doc-type">Delivery Order</div><div className="doc-num">{doc.id}</div>{doc.invoiceRef&&<div style={{fontSize:10,background:"#f5f0ff",border:"1px solid #d4b8f8",color:"#6b21a8",padding:"3px 8px",borderRadius:4,marginTop:5,textAlign:"right",fontWeight:700}}>🧾 {doc.invoiceRef}</div>}</div>
           </div>
           <div className="doc-parties">
-            <div><div className="dp-lbl">Delivered By</div><div className="dp-name">{MY_COMPANY.name}</div><div className="dp-det">TIN: {MY_COMPANY.tin}<br/>SSM: {MY_COMPANY.reg}</div></div>
+            <div><div className="dp-lbl">Delivered By</div><div className="dp-name">{company.name}</div><div className="dp-det">TIN: {company.tin}<br/>SSM: {company.reg}</div></div>
             <div><div className="dp-lbl">Delivered To</div><div className="dp-name">{customer?.name}</div><div className="dp-det">{customer?.tin&&<>TIN: {customer.tin}<br/></>}{customer?.reg&&<>SSM: {customer.reg}<br/></>}<span style={{whiteSpace:"pre-line"}}>{customer?.address}</span></div></div>
           </div>
           <div className="doc-meta">
@@ -228,7 +228,7 @@ export default function DeliveryOrdersPage({ data }) {
         </table>
       </div>
       {modal==="new"&&<NewDOModal onClose={()=>setModal(null)} onSave={saveDO} nextId={nid} customers={customers}/>}
-      {modal?.type==="view"&&<DODocument doc={modal.doc} customer={getCustomer(modal.doc.customerId)} onClose={()=>setModal(null)}/>}
+      {modal?.type==="view"&&<DODocument doc={modal.doc} customer={getCustomer(modal.doc.customerId)} onClose={()=>setModal(null)} company={data.company}/>}
     </div>
   );
 }

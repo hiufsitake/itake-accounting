@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { T } from "../components/tokens";
-import { MY_COMPANY } from "../data/seedData";
+
 import { calcLines, fmtRM } from "../utils/helpers";
 
 const nextId = (prefix, list) => `${prefix}-${new Date().getFullYear()}-${String(list.length + 1).padStart(3, "0")}`;
@@ -36,7 +36,7 @@ const docCss = `
 .ndoc-tbl td:last-child{text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600}
 `;
 
-function NoteDocument({ note, type, onClose }) {
+function NoteDocument({ note, type, onClose, company }) {
   const isCN  = type === "cn";
   const color = isCN ? T.amber : T.red;
   const label = isCN ? "Credit Note" : "Debit Note";
@@ -55,8 +55,8 @@ function NoteDocument({ note, type, onClose }) {
           {note.status==="draft" && <div className="ndoc-wm">DRAFT</div>}
           <div className="ndoc-hdr">
             <div>
-              <div className="ndoc-co">{MY_COMPANY.name}</div>
-              <div className="ndoc-det">SSM: {MY_COMPANY.reg}<br/>SST: {MY_COMPANY.sst} · TIN: {MY_COMPANY.tin}<br/>{MY_COMPANY.address}</div>
+              <div className="ndoc-co">{company.name}</div>
+              <div className="ndoc-det">SSM: {company.reg}<br/>SST: {company.sst} · TIN: {company.tin}<br/>{company.address}</div>
             </div>
             <div>
               <div className="ndoc-type" style={{ color }}>{label}</div>
@@ -68,8 +68,8 @@ function NoteDocument({ note, type, onClose }) {
           <div className="ndoc-parties">
             <div>
               <div style={{ fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:1.5,color:"#9a9388",marginBottom:5 }}>Issued By</div>
-              <div style={{ fontSize:13,fontWeight:600,marginBottom:2 }}>{MY_COMPANY.name}</div>
-              <div style={{ fontSize:10.5,color:"#6a6258" }}>TIN: {MY_COMPANY.tin}<br/>SST: {MY_COMPANY.sst}</div>
+              <div style={{ fontSize:13,fontWeight:600,marginBottom:2 }}>{company.name}</div>
+              <div style={{ fontSize:10.5,color:"#6a6258" }}>TIN: {company.tin}<br/>SST: {company.sst}</div>
             </div>
             <div>
               <div style={{ fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:1.5,color:"#9a9388",marginBottom:5 }}>Issued To</div>
@@ -307,8 +307,8 @@ export default function CreditDebitNotePage({ data }) {
 
       {modal==="newCN"           && <NewNoteModal type="cn" onClose={()=>setModal(null)} onSave={n=>{setCNs(p=>[n,...p]);setModal(null)}} nextId={nextCN} customers={customers} invoices={invoices}/>}
       {modal==="newDN"           && <NewNoteModal type="dn" onClose={()=>setModal(null)} onSave={n=>{setDNs(p=>[n,...p]);setModal(null)}} nextId={nextDN} customers={customers} invoices={invoices}/>}
-      {modal?.type==="viewCN"    && <NoteDocument note={modal.note} type="cn" onClose={()=>setModal(null)}/>}
-      {modal?.type==="viewDN"    && <NoteDocument note={modal.note} type="dn" onClose={()=>setModal(null)}/>}
+      {modal?.type==="viewCN"    && <NoteDocument note={modal.note} type="cn" onClose={()=>setModal(null)} company={data.company}/>}
+      {modal?.type==="viewDN"    && <NoteDocument note={modal.note} type="dn" onClose={()=>setModal(null)} company={data.company}/>}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { T } from "../components/tokens";
-import { MY_COMPANY } from "../data/seedData";
+
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 const fmtRM  = n => "RM " + Number(n).toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -48,7 +48,7 @@ const docCss = `
 `;
 
 // ─── PV DOCUMENT ──────────────────────────────────────────────────────────────
-function PVDocument({ pv, onClose }) {
+function PVDocument({ pv, onClose, company }) {
   return (
     <div style={{ position:"fixed",inset:0,background:"#2a2520",zIndex:400,display:"flex",flexDirection:"column",overflow:"hidden" }}>
       <style>{docCss}</style>
@@ -64,8 +64,8 @@ function PVDocument({ pv, onClose }) {
           {!pv.paid && <div className="vdoc-wm">UNPAID</div>}
           <div className="vdoc-hdr">
             <div>
-              <div className="vdoc-co">{MY_COMPANY.name}</div>
-              <div className="vdoc-det">SSM: {MY_COMPANY.reg}<br/>{MY_COMPANY.address}<br/>{MY_COMPANY.phone}</div>
+              <div className="vdoc-co">{company.name}</div>
+              <div className="vdoc-det">SSM: {company.reg}<br/>{company.address}<br/>{company.phone}</div>
             </div>
             <div>
               <div className="vdoc-type" style={{ color: T.red }}>Payment Voucher</div>
@@ -102,7 +102,7 @@ function PVDocument({ pv, onClose }) {
           </div>
 
           <div style={{ marginTop:16,fontSize:10,color:T.inkLight,borderTop:`1px solid ${T.border}`,paddingTop:10 }}>
-            This Payment Voucher is an official accounting document of {MY_COMPANY.name}. Authorised for payment as per above. File with supporting documents for audit trail per Companies Act 2016 s245.
+            This Payment Voucher is an official accounting document of {company.name}. Authorised for payment as per above. File with supporting documents for audit trail per Companies Act 2016 s245.
           </div>
         </div>
       </div>
@@ -111,7 +111,7 @@ function PVDocument({ pv, onClose }) {
 }
 
 // ─── RV DOCUMENT ──────────────────────────────────────────────────────────────
-function RVDocument({ rv, onClose }) {
+function RVDocument({ rv, onClose, company }) {
   return (
     <div style={{ position:"fixed",inset:0,background:"#2a2520",zIndex:400,display:"flex",flexDirection:"column",overflow:"hidden" }}>
       <style>{docCss}</style>
@@ -126,8 +126,8 @@ function RVDocument({ rv, onClose }) {
         <div className="vdoc" style={{ position:"relative" }}>
           <div className="vdoc-hdr">
             <div>
-              <div className="vdoc-co">{MY_COMPANY.name}</div>
-              <div className="vdoc-det">SSM: {MY_COMPANY.reg}<br/>{MY_COMPANY.address}<br/>{MY_COMPANY.phone}</div>
+              <div className="vdoc-co">{company.name}</div>
+              <div className="vdoc-det">SSM: {company.reg}<br/>{company.address}<br/>{company.phone}</div>
             </div>
             <div>
               <div className="vdoc-type" style={{ color: T.green }}>Receipt Voucher</div>
@@ -170,7 +170,7 @@ function RVDocument({ rv, onClose }) {
           </div>
 
           <div style={{ marginTop:16,fontSize:10,color:T.inkLight,borderTop:`1px solid ${T.border}`,paddingTop:10 }}>
-            This Receipt Voucher confirms receipt of the above payment. Please retain this receipt for your records. {MY_COMPANY.name} · {MY_COMPANY.reg}
+            This Receipt Voucher confirms receipt of the above payment. Please retain this receipt for your records. {company.name} · {company.reg}
           </div>
         </div>
       </div>
@@ -413,8 +413,8 @@ export default function VouchersPage({ data }) {
 
       {modal==="newPV"          && <NewPVModal onClose={()=>setModal(null)} onSave={savePV} nextId={nextPV} suppliers={suppliers}/>}
       {modal==="newRV"          && <NewRVModal onClose={()=>setModal(null)} onSave={saveRV} nextId={nextRV} customers={customers}/>}
-      {modal?.type==="viewPV"   && <PVDocument pv={modal.pv} onClose={()=>setModal(null)}/>}
-      {modal?.type==="viewRV"   && <RVDocument rv={modal.rv} onClose={()=>setModal(null)}/>}
+      {modal?.type==="viewPV"   && <PVDocument pv={modal.pv} onClose={()=>setModal(null)} company={data.company}/>}
+      {modal?.type==="viewRV"   && <RVDocument rv={modal.rv} onClose={()=>setModal(null)} company={data.company}/>}
     </div>
   );
 }

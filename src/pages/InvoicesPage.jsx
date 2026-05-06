@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { T } from "../components/tokens";
 import { calcLines, fmtRM, nextId, getSSTRate, getSSTLabel } from "../utils/helpers";
-import { MY_COMPANY, SST_RATES } from "../data/seedData";
+import { SST_RATES } from "../data/seedData";
 
 function StatusBadge({ s }) {
   const m={paid:"bg",pending:"ba",overdue:"br",draft:"bk"};
@@ -33,7 +33,7 @@ const invDocCss = `
 .inv-tbl tr:last-child td{border-bottom:none}
 `;
 
-function InvoiceDocument({ inv, customer, onClose }) {
+function InvoiceDocument({ inv, customer, onClose, company }) {
   const { rows, subtotal, sstTotal, total } = calcLines(inv.items);
   return (
     <div style={{position:"fixed",inset:0,background:"#2a2520",zIndex:400,display:"flex",flexDirection:"column",overflow:"hidden"}}>
@@ -51,8 +51,8 @@ function InvoiceDocument({ inv, customer, onClose }) {
           {inv.status==="overdue"&&<div className="inv-wm">OVERDUE</div>}
           <div className="inv-hdr">
             <div>
-              <div className="inv-co-name">{MY_COMPANY.name}</div>
-              <div className="inv-co-det">SSM: {MY_COMPANY.reg}<br/>SST: {MY_COMPANY.sst} · TIN: {MY_COMPANY.tin}<br/>{MY_COMPANY.address}<br/>{MY_COMPANY.phone} · {MY_COMPANY.email}</div>
+              <div className="inv-co-name">{company.name}</div>
+              <div className="inv-co-det">SSM: {company.reg}<br/>SST: {company.sst} · TIN: {company.tin}<br/>{company.address}<br/>{company.phone} · {company.email}</div>
             </div>
             <div>
               <div className="inv-type">Tax Invoice</div>
@@ -62,7 +62,7 @@ function InvoiceDocument({ inv, customer, onClose }) {
             </div>
           </div>
           <div className="inv-parties">
-            <div><div className="dp-lbl">Bill From</div><div className="dp-name">{MY_COMPANY.name}</div><div className="dp-det">TIN: {MY_COMPANY.tin}<br/>SST: {MY_COMPANY.sst}<br/>SSM: {MY_COMPANY.reg}</div></div>
+            <div><div className="dp-lbl">Bill From</div><div className="dp-name">{company.name}</div><div className="dp-det">TIN: {company.tin}<br/>SST: {company.sst}<br/>SSM: {company.reg}</div></div>
             <div><div className="dp-lbl">Bill To</div><div className="dp-name">{customer?.name}</div><div className="dp-det">{customer?.tin&&<>TIN: {customer.tin}<br/></>}{customer?.reg&&<>SSM: {customer.reg}<br/></>}{customer?.sst&&<>SST: {customer.sst}<br/></>}<span style={{whiteSpace:"pre-line"}}>{customer?.address}</span></div></div>
           </div>
           <div className="inv-meta">
@@ -96,9 +96,9 @@ function InvoiceDocument({ inv, customer, onClose }) {
           <div style={{paddingTop:18,borderTop:"1px solid #e5e2db",display:"grid",gridTemplateColumns:"1fr auto",gap:20}}>
             <div>
               <div style={{fontSize:9.5,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:"#9a9388",marginBottom:4}}>Payment</div>
-              <div style={{fontSize:10.5,color:"#6a6258",lineHeight:1.7}}>{MY_COMPANY.bank}<br/>Reference: {inv.id}</div>
+              <div style={{fontSize:10.5,color:"#6a6258",lineHeight:1.7}}>{company.bank}<br/>Reference: {inv.id}</div>
               {inv.notes&&<><div style={{fontSize:9.5,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:"#9a9388",marginTop:10,marginBottom:4}}>Notes</div><div style={{fontSize:10.5,color:"#6a6258",lineHeight:1.7}}>{inv.notes}</div></>}
-              <div style={{fontSize:9,color:"#9a9388",marginTop:10}}>Tax Invoice under SST Act 2018 (Malaysia). SST Reg: {MY_COMPANY.sst}.{inv.uin?` LHDN MyInvois UIN: ${inv.uin}.`:""}</div>
+              <div style={{fontSize:9,color:"#9a9388",marginTop:10}}>Tax Invoice under SST Act 2018 (Malaysia). SST Reg: {company.sst}.{inv.uin?` LHDN MyInvois UIN: ${inv.uin}.`:""}</div>
             </div>
             {inv.uin&&<div style={{display:"flex",flexDirection:"column",alignItems:"flex-end"}}>
               <div style={{width:56,height:56,background:"#f0ede8",border:"1px solid #e0ddd8",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,borderRadius:6,marginBottom:4}}>📱</div>
@@ -293,7 +293,7 @@ export default function InvoicesPage({ data }) {
       </div>
 
       {modal==="new"&&<NewInvoiceModal onClose={()=>setModal(null)} onSave={saveInvoice} nextInvId={nid} customers={customers} dos={dos}/>}
-      {modal?.type==="view"&&<InvoiceDocument inv={modal.inv} customer={getCustomer(modal.inv.customerId)} onClose={()=>setModal(null)}/>}
+      {modal?.type==="view"&&<InvoiceDocument inv={modal.inv} customer={getCustomer(modal.inv.customerId)} onClose={()=>setModal(null)} company={data.company}/>}
     </div>
   );
 }
